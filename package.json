@@ -1,0 +1,21 @@
+{
+  "name": "crossmint-expo-demo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "mobile:ios": "pnpm --filter mobile ios",
+    "mobile:android": "pnpm --filter mobile android",
+    "mobile:start": "pnpm --filter mobile start",
+    "web:dev": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build",
+    "web:start": "pnpm --filter web start",
+    "common:build": "pnpm --filter @app/common build",
+    "common:dev": "pnpm --filter @app/common dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
+}
