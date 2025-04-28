@@ -23,7 +23,7 @@ export const defaultCheckoutOptions: CheckoutOptions = {
     },
   },
   recipient: {
-    walletAddress: "EbXL4e6XgbcC7s33cD5EZtyn5nixRDsieBjPQB7zf448",
+    walletAddress: "EbXL4e6XgbcC7s33cD5EZtyn5nixRDsieBjPQB7zf448", // Change to the user's wallet address
   },
   lineItems: {
     tokenLocator: "solana:6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
@@ -47,7 +47,7 @@ export const defaultCheckoutOptions: CheckoutOptions = {
     },
     method: "checkoutcom-flow",
     defaultMethod: "fiat",
-    receiptEmail: "robin@crossmint.com",
+    receiptEmail: "robin+checkout@crossmint.com", // Change to the user's email
   },
 };
 

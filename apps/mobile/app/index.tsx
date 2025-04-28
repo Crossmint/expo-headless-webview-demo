@@ -30,14 +30,10 @@ const AmountView: React.FC<AmountViewProps> = ({
 
     <View style={styles.amountInputContainer}>
       <View style={styles.amountCard}>
-        <Text style={styles.youReceiveText}>You receive</Text>
         <View style={styles.amountContainer}>
           <View style={styles.amountDisplay}>
             <Text style={styles.dollarSign}>$</Text>
             <Text style={styles.amountValue}>{inputAmount}</Text>
-            <View style={styles.currencyBadge}>
-              <Text style={styles.currencyText}>TRUMP</Text>
-            </View>
           </View>
         </View>
       </View>
@@ -263,203 +259,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
   },
-  headerText: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#ffffff",
-    textAlign: "center",
-  },
-  balanceContainer: {
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 16,
-    marginHorizontal: 16,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  balanceLabel: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 8,
-  },
-  balanceAmount: {
-    fontSize: 32,
-    fontWeight: "700",
-    color: "#333",
-  },
-  buttonContainer: {
-    marginHorizontal: 16,
-    marginVertical: 20,
-  },
-  primaryButton: {
-    backgroundColor: "#00C853",
-    padding: 16,
-    borderRadius: 8,
-    width: "100%",
-    alignItems: "center",
-  },
-  primaryButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  secondaryButton: {
-    backgroundColor: "transparent",
-    padding: 16,
-    borderRadius: 8,
-    width: "100%",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#00C853",
-  },
-  secondaryButtonText: {
-    color: "#00C853",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  amountsContainer: {
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 16,
-    marginHorizontal: 16,
-    marginTop: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  selectText: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 16,
-    color: "#333",
-  },
-  amountButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  amountButton: {
-    backgroundColor: "#f5f5f5",
-    borderWidth: 1,
-    borderColor: "#00C853",
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width: "30%",
-  },
-  amountButtonText: {
-    color: "#00C853",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  content: {
-    padding: 16,
-  },
-  paymentDetails: {
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    padding: 16,
-    marginHorizontal: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 16,
-    color: "#333",
-  },
-  amountRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 12,
-  },
-  label: {
-    fontSize: 16,
-    color: "#666",
-  },
-  amount: {
-    fontSize: 16,
-    color: "#333",
-    fontWeight: "500",
-  },
-  line: {
-    height: 1,
-    backgroundColor: "#e0e0e0",
-    marginVertical: 16,
-  },
-  totalRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  totalLabel: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#333",
-  },
-  totalAmount: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#00C853",
-  },
-  spacer: {
-    height: 12,
-  },
-  webviewContainer: {
-    flex: 1,
-    position: "relative",
-    backgroundColor: "#fff",
-  },
-  webview: {
-    flex: 1,
-    padding: 20,
-    width: "100%",
-    height: "100%",
-  },
-  closeButtonContainer: {
-    position: "absolute",
-    bottom: 20,
-    left: 16,
-    right: 16,
-  },
-  closeButton: {
-    backgroundColor: "#00C853",
-    borderRadius: 8,
-    paddingVertical: 14,
-    alignItems: "center",
-  },
-  closeButtonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "500",
-  },
   headerTitle: {
     fontSize: 18,
     fontWeight: "500",
     color: "#333",
     textAlign: "center",
     flex: 1,
-  },
-  backButton: {
-    padding: 8,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#333",
-    marginLeft: 4,
   },
   amountInputContainer: {
     flex: 1,
@@ -472,11 +277,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 24,
     marginBottom: 20,
-  },
-  youReceiveText: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 16,
   },
   amountContainer: {
     width: "100%",
@@ -498,35 +298,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
     marginRight: 12,
-  },
-  currencyBadge: {
-    backgroundColor: "#f0f0f0",
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  currencyText: {
-    fontSize: 14,
-    color: "#666",
-  },
-  conversionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  conversionText: {
-    fontSize: 14,
-    color: "#666",
-    marginRight: 8,
-  },
-  conversionAmount: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#333",
-    marginRight: 5,
-  },
-  currencyCode: {
-    fontSize: 16,
-    color: "#666",
   },
   quickAmountContainer: {
     flexDirection: "row",
@@ -574,5 +345,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "500",
+  },
+  webviewContainer: {
+    flex: 1,
+    position: "relative",
+    backgroundColor: "#fff",
+  },
+  webview: {
+    flex: 1,
+    padding: 20,
+    width: "100%",
+    height: "100%",
   },
 });
