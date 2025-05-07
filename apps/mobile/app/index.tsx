@@ -1,5 +1,11 @@
 import type { FC } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { useState } from "react";
 import { WebView } from "react-native-webview";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,7 +19,6 @@ interface AmountViewProps {
   onSelectAmount: (amount: number) => void;
   onNumberPress: (num: string) => void;
   onDeletePress: () => void;
-  onContinue: () => void;
 }
 
 const AmountView: React.FC<AmountViewProps> = ({
@@ -21,172 +26,11 @@ const AmountView: React.FC<AmountViewProps> = ({
   onSelectAmount,
   onNumberPress,
   onDeletePress,
-  onContinue,
-}) => (
-  <View style={styles.container}>
-    <View style={styles.header}>
-      <Text style={styles.headerTitle}>How much do you want to buy?</Text>
-    </View>
-
-    <View style={styles.amountInputContainer}>
-      <View style={styles.amountCard}>
-        <View style={styles.amountContainer}>
-          <View style={styles.amountDisplay}>
-            <Text style={styles.dollarSign}>$</Text>
-            <Text style={styles.amountValue}>{inputAmount}</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.quickAmountContainer}>
-        <TouchableOpacity
-          style={styles.quickAmountButton}
-          onPress={() => onSelectAmount(25)}
-        >
-          <Text style={styles.quickAmountText}>$25</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.quickAmountButton}
-          onPress={() => onSelectAmount(50)}
-        >
-          <Text style={styles.quickAmountText}>$50</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.quickAmountButton}
-          onPress={() => onSelectAmount(75)}
-        >
-          <Text style={styles.quickAmountText}>$75</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.quickAmountButton}
-          onPress={() => onSelectAmount(100)}
-        >
-          <Text style={styles.quickAmountText}>$100</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.keypadContainer}>
-        <View style={styles.keypadRow}>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("1")}
-          >
-            <Text style={styles.keypadButtonText}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("2")}
-          >
-            <Text style={styles.keypadButtonText}>2</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("3")}
-          >
-            <Text style={styles.keypadButtonText}>3</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.keypadRow}>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("4")}
-          >
-            <Text style={styles.keypadButtonText}>4</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("5")}
-          >
-            <Text style={styles.keypadButtonText}>5</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("6")}
-          >
-            <Text style={styles.keypadButtonText}>6</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.keypadRow}>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("7")}
-          >
-            <Text style={styles.keypadButtonText}>7</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("8")}
-          >
-            <Text style={styles.keypadButtonText}>8</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("9")}
-          >
-            <Text style={styles.keypadButtonText}>9</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.keypadRow}>
-          <TouchableOpacity
-            style={styles.keypadButton}
-            onPress={() => onNumberPress("0")}
-          >
-            <Text style={styles.keypadButtonText}>0</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.keypadButton} onPress={onDeletePress}>
-            <Ionicons name="backspace-outline" size={24} color="#333" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <TouchableOpacity
-        disabled={!inputAmount || inputAmount === "0"}
-        style={styles.continueButton}
-        onPress={onContinue}
-      >
-        <Text style={styles.continueButtonText}>Continue</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-);
-
-interface PaymentViewProps {
-  uri: string;
-}
-
-const PaymentView: FC<PaymentViewProps> = ({ uri }) => (
-  <View style={styles.webviewContainer}>
-    <WebView
-      key={uri}
-      source={{ uri }}
-      style={styles.webview}
-      originWhitelist={["*"]}
-      scrollEnabled={false}
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
-      thirdPartyCookiesEnabled={true}
-      cacheEnabled={true}
-      userAgent={userAgent}
-      mixedContentMode="always"
-      allowFileAccess={true}
-      allowUniversalAccessFromFileURLs={true}
-      geolocationEnabled={true}
-      mediaPlaybackRequiresUserGesture={false}
-      allowsInlineMediaPlayback={true}
-    />
-  </View>
-);
-
-export default function CrossmintApp() {
-  const [currentView, setCurrentView] = useState<"amount" | "webview">(
-    "amount"
-  );
-  const [inputAmount, setInputAmount] = useState("1");
-
-  const { data: uri } = useQuery({
+}) => {
+  const { data: uri, isLoading } = useQuery({
     queryKey: ["checkout", inputAmount],
     queryFn: async () => {
-      if (!inputAmount) {
+      if (!inputAmount || inputAmount === "0") {
         return null;
       }
 
@@ -201,17 +45,169 @@ export default function CrossmintApp() {
         },
       });
     },
-    enabled: !!inputAmount,
+    enabled: !!inputAmount && inputAmount !== "0",
   });
 
-  console.log({ uri });
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>How much do you want to buy?</Text>
+      </View>
+
+      <View style={styles.amountInputContainer}>
+        <View style={styles.amountCard}>
+          <View style={styles.amountContainer}>
+            <View style={styles.amountDisplay}>
+              <Text style={styles.dollarSign}>$</Text>
+              <Text style={styles.amountValue}>{inputAmount}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.quickAmountContainer}>
+          <TouchableOpacity
+            style={styles.quickAmountButton}
+            onPress={() => onSelectAmount(25)}
+          >
+            <Text style={styles.quickAmountText}>$25</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.quickAmountButton}
+            onPress={() => onSelectAmount(50)}
+          >
+            <Text style={styles.quickAmountText}>$50</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.quickAmountButton}
+            onPress={() => onSelectAmount(75)}
+          >
+            <Text style={styles.quickAmountText}>$75</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.quickAmountButton}
+            onPress={() => onSelectAmount(100)}
+          >
+            <Text style={styles.quickAmountText}>$100</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.keypadContainer}>
+          <View style={styles.keypadRow}>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("1")}
+            >
+              <Text style={styles.keypadButtonText}>1</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("2")}
+            >
+              <Text style={styles.keypadButtonText}>2</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("3")}
+            >
+              <Text style={styles.keypadButtonText}>3</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.keypadRow}>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("4")}
+            >
+              <Text style={styles.keypadButtonText}>4</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("5")}
+            >
+              <Text style={styles.keypadButtonText}>5</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("6")}
+            >
+              <Text style={styles.keypadButtonText}>6</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.keypadRow}>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("7")}
+            >
+              <Text style={styles.keypadButtonText}>7</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("8")}
+            >
+              <Text style={styles.keypadButtonText}>8</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("9")}
+            >
+              <Text style={styles.keypadButtonText}>9</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.keypadRow}>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={() => onNumberPress("0")}
+            >
+              <Text style={styles.keypadButtonText}>0</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.keypadButton}
+              onPress={onDeletePress}
+            >
+              <Ionicons name="backspace-outline" size={24} color="#333" />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.webviewContainer}>
+          {isLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#00C853" />
+            </View>
+          ) : uri ? (
+            <WebView
+              key={uri}
+              source={{ uri }}
+              style={styles.webview}
+              originWhitelist={["*"]}
+              scrollEnabled={false}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              thirdPartyCookiesEnabled={true}
+              cacheEnabled={true}
+              userAgent={userAgent}
+              mixedContentMode="always"
+              allowFileAccess={true}
+              allowUniversalAccessFromFileURLs={true}
+              geolocationEnabled={true}
+              mediaPlaybackRequiresUserGesture={false}
+              allowsInlineMediaPlayback={true}
+            />
+          ) : (
+            <View style={styles.disabledButton}>
+              <Text style={styles.disabledButtonText}>Enter an amount</Text>
+            </View>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default function CrossmintApp() {
+  const [inputAmount, setInputAmount] = useState("1");
 
   const handleSelectAmount = (amount: number) => {
     setInputAmount(amount.toString());
-  };
-
-  const handlePayNow = () => {
-    setCurrentView("webview");
   };
 
   const handleNumberPress = (num: string) => {
@@ -232,16 +228,13 @@ export default function CrossmintApp() {
     setInputAmount(newInputAmount);
   };
 
-  return currentView === "amount" || !uri ? (
+  return (
     <AmountView
       inputAmount={inputAmount}
       onSelectAmount={handleSelectAmount}
       onNumberPress={handleNumberPress}
       onDeletePress={handleDeletePress}
-      onContinue={handlePayNow}
     />
-  ) : (
-    <PaymentView uri={uri} />
   );
 }
 
@@ -335,26 +328,34 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#333",
   },
-  continueButton: {
-    backgroundColor: "#00C853",
-    borderRadius: 8,
-    paddingVertical: 16,
-    alignItems: "center",
-  },
-  continueButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "500",
-  },
   webviewContainer: {
-    flex: 1,
-    position: "relative",
+    height: 200,
     backgroundColor: "#fff",
+    borderRadius: 8,
+    overflow: "hidden",
   },
   webview: {
     flex: 1,
-    padding: 20,
     width: "100%",
     height: "100%",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
+  disabledButton: {
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+    paddingVertical: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  },
+  disabledButtonText: {
+    color: "#999",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
